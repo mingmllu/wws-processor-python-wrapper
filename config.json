@@ -1,0 +1,3 @@
+{
+    "broker_url": "amqp://instadash:instadash!@localhost:5672/%2ftest"
+}
