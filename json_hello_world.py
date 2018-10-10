@@ -3,7 +3,7 @@ from wws_wrap import StreamOperator, wws_start
 class JsonHelloWorldOperator(StreamOperator):
 
     block_type = 'pywrap_json_hello_world'
-    input_ports = [('in', int)]
+    input_ports = [('in', str)]
     output_ports = [('out', str)]
 
     def __init__(self, inputs, outputs, **kwargs):
