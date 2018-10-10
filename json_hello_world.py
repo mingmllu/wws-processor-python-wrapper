@@ -10,7 +10,7 @@ class JsonHelloWorldOperator(StreamOperator):
         StreamOperator.__init__(self, inputs, outputs)
 
     def process(self, data, key=None):
-        yield 'out', 'Hello World'
+        yield 'out', data
 
 if __name__ == '__main__':
     wws_start()
