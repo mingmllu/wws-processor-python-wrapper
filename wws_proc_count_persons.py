@@ -7,11 +7,12 @@ class PeopleCountingOperator(StreamOperator):
     input_ports = [('in', str)]
     output_ports = [('out', str)]
 
-    def __init__(self, inputs, outputs, **kwargs):
+    def __init__(self, inputs, outputs, camera: str, **kwargs):
         StreamOperator.__init__(self, inputs, outputs)
+        self._camera = camera  # A name assigned to the processor
 
     def process(self, data, key=None):
-        output_dict = { "count_person" : 0 }
+        output_dict = { "camera" : self._camera, "count_person" : 0 }
         # will set input type hints to JSON directly
         data_double_quotes = data.replace("\'", "\"") #JSON strings must use double quotes
         data_dict = json.loads(data_double_quotes)

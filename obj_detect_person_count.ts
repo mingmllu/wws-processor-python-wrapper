@@ -1,20 +1,24 @@
 import { ExternalOperator, Stream, InputPort, declare_external_op } from "@xstream/core"
 
-export interface PeopleCountingOperator extends ExternalOperator<string> {
+interface PeopleCountingOperator extends ExternalOperator<string> {
   in: InputPort<string>;
   $in: InputPort<string>;
   out: Stream<string>;
   $out: Stream<string>;
 }
 
-export function pywrap_count_people(params: {
-
+function pywrap_count_people(params: {
+  camera: string
 }): PeopleCountingOperator {
   let spec = {
     "blockType": "pywrap_count_people",
     "functionName": "pywrap_count_people",
     "version": "0.0.1",
-    "paramsSpec": {},
+    "paramsSpec": {
+        "camera": {
+            "default": null
+        }
+    },
     "inputSpec": {
         "in": {
             "default": true
@@ -34,7 +38,6 @@ export function pywrap_count_people(params: {
 
 
 
-
 import { source } from "@xstream/core"
 import { video_in, video_out } from "@xstream/gstreamer"
 import { object_detector, Models } from "@xstream/tensorflow"
@@ -51,5 +54,5 @@ let o0=object_detector({model: Models.FAST, fps:1})
 v0.pipe(o0).pipe(video_out({name: 'video_after'}))
 v0.pipe(video_out({name: 'video_before'}))
 o0.event.sink("event_JSON_results")
-o0.event.pipe(pywrap_count_people({}))
+o0.event.pipe(pywrap_count_people({camera: 'BRISTOL_SQUARE'}))
 .sink("count_people")
