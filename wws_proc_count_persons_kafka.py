@@ -37,7 +37,7 @@ class PeopleCountingOperator(StreamOperator):
                              if detect_obj["confidence"] >= self._confidence:
                                  output_dict["count_person"] += 1
         if hasattr(self, '_producer'):
-            self._producer.send(topic, output_dict)
+            self._producer.send(self._topic, output_dict)
         yield 'out', output_dict
 
 if __name__ == '__main__':
