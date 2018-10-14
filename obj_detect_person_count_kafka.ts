@@ -9,6 +9,7 @@ interface PeopleCountingOperator extends ExternalOperator<string> {
 
 function pywrap_count_people(params: {
   camera: string,
+  brokers: string,
   topic: string,
   confidence: number
 }): PeopleCountingOperator {
@@ -19,6 +20,9 @@ function pywrap_count_people(params: {
     "paramsSpec": {
         "camera": {
             "default": "unknown"
+        },
+        "brokers": {
+            "default": "localhost:9092"
         },
         "topic": {
             "default": "wws"
@@ -62,5 +66,6 @@ let o0=object_detector({model: Models.FAST, fps:1})
 v0.pipe(o0).pipe(video_out({name: 'video_after'}))
 v0.pipe(video_out({name: 'video_before'}))
 o0.event.sink("event_JSON_results")
-o0.event.pipe(pywrap_count_people({camera: 'BRISTOL_SQUARE', confidence: 0.7, topic: 'wws_video'}))
+o0.event.pipe(pywrap_count_people({camera: 'BRISTOL_SQUARE', confidence: 0.7, 
+                                   brokers: 'localhost: 9092', topic: 'wws_video'}))
 .sink("count_people")

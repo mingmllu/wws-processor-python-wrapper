@@ -9,15 +9,16 @@ class PeopleCountingOperator(StreamOperator):
     output_ports = [('out', str)]
 
     def __init__(self, inputs, outputs, 
-                 camera: str='unknown', 
-                 topic: str='wws', 
+                 camera: str='unknown', # identifier of video stream source
+                 brokers: str='localhost:9092', # Kafka bootstrap_servers
+                 topic: str='wws', # Kafka topic 
                  confidence: float=0.7, **kwargs):
         StreamOperator.__init__(self, inputs, outputs)
         self._camera = camera  # A name assigned to the processor
         self._confidence = max(0.0, min(confidence, 1.0))
         self._topic = topic # Kafka topic
         try:
-            self._producer = KafkaProducer(bootstrap_servers = 'localhost:9092', 
+            self._producer = KafkaProducer(bootstrap_servers = brokers, 
                                            value_serializer = lambda v: json.dumps(v).encode('utf-8'))
         except:
             pass
