@@ -42,7 +42,8 @@ class PeopleCountingOperator(StreamOperator):
                                  output_dict["bbox"].append(detect_obj["bbox"])
         if hasattr(self, '_producer'):
             self._producer.send(self._topic, output_dict)
-            if time.time() - self._last_sent_time >= 0.5:
+            if time.time() - self._last_sent_time >= 0.25:
+                output_dict.pop("bbox")
                 self._producer.send(self._topic + "_sti", output_dict)
                 self._last_sent_time = time.time()
                 
